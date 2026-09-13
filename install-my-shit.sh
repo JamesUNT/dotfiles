@@ -4,26 +4,53 @@
 REAL_USER=${SUDO_USER:-$USER}
 USER_HOME=$(eval echo ~$REAL_USER)
 
-# 1. Adiciona repositório comunitário
+# Função para exibir a arte ASCII e destacar a etapa atual
+print_step() {
+    echo -e "\n\033[38;5;33m▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄\033[0m"
+    echo -e "\033[1;32m 🚀 ETAPA $1/9\033[0m ➔ \033[1;37m$2\033[0m"
+    echo -e "\033[38;5;33m▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀\033[0m\n"
+    sleep 1 # Pausa de 1 segundo para visualização
+}
+
+# Arte de Cabeçalho Inicial
+clear
+echo -e "\033[1;32m"
+echo "  _    _       _     _    _      _                  "
+echo " | |  | |     (_)   | |  | |    (_)                 "
+echo " | |  | | ___  _  __| |  | |     _ _ __  _   ___  __"
+echo " | |/\| |/ _ \| |/ _\` |  | |    | | '_ \| | | \ \/ /"
+echo " \  /\  / (_) | | (_| |  | |____| | | | | |_| |>  < "
+echo "  \/  \/ \___/|_|\__,_|  |______|_|_| |_|\__,_/_/\_\\"
+echo -e "\033[0m"
+echo -e " \033[1;36mAutomação: Niri + Noctalia + Zellij + AMD Drivers\033[0m"
+echo -e " Usuário alvo: \033[1;33m$REAL_USER\033[0m\n"
+sleep 2
+
+print_step 1 "Adicionando repositório comunitário (repo.voiders.dev)"
 echo "repository=https://repo.voiders.dev" | sudo tee /etc/xbps.d/10-voiders-community.conf
 
-# 2. Atualiza pacotes e instala ambiente gráfico base, Noctalia e Zellij
+print_step 2 "Instalando ambiente gráfico, Noctalia, Zellij e drivers AMD"
 sudo xbps-install -Syu
 sudo xbps-install -y \
   wayland xorg-server-xwayland dbus mesa-dri vulkan-loader pipewire wireplumber bluez \
   niri seatd polkit polkit-gnome \
   xdg-desktop-portal xdg-desktop-portal-gnome \
-  greetd tuigreet yazi nerd-fonts alacritty noctalia zellij
+  greetd tuigreet yazi nerd-fonts alacritty noctalia zellij \
+  linux-firmware-amd vulkan-radeon amd-ucode mesa-vaapi
 
-# 3. Ativa serviços no runit
+print_step 3 "Atualizando a imagem de inicialização (Initramfs)"
+sudo xbps-reconfigure -f linux
+
+print_step 4 "Ativando serviços runit e limpando conflitos do TTY1"
 for svc in dbus polkitd seatd bluetoothd greetd; do
     sudo ln -sf /etc/sv/$svc /var/service/
 done
+sudo rm -f /var/service/agetty-tty1
 
-# 4. Configura permissões de hardware (Corrigido espaçamento na lista de grupos)
+print_step 5 "Configurando permissões de hardware (Seatd e Bluetooth)"
 sudo usermod -aG bluetooth,_seatd $REAL_USER
 
-# 5. Configura login via tuigreet
+print_step 6 "Configurando gerenciador de login (Tuigreet)"
 sudo mkdir -p /etc/greetd
 sudo tee /etc/greetd/config.toml > /dev/null <<EOF
 [terminal]
@@ -34,7 +61,7 @@ command = "tuigreet --time --cmd niri-session"
 user = "_greetd"
 EOF
 
-# 6. Prepara arquivos do Niri
+print_step 7 "Preparando arquivos do Niri no diretório do usuário"
 NIRI_DIR="$USER_HOME/.config/niri"
 sudo -u $REAL_USER mkdir -p "$NIRI_DIR"
 
@@ -44,7 +71,7 @@ else
     sudo -u $REAL_USER touch "$NIRI_DIR/config.kdl"
 fi
 
-# 7. Adiciona autostart no Niri
+print_step 8 "Injetando autostarts no arquivo de configuração do Niri"
 sudo -u $REAL_USER tee -a "$NIRI_DIR/config.kdl" > /dev/null <<EOF
 
 // Autostart 
@@ -54,11 +81,12 @@ spawn-at-startup "/usr/libexec/polkit-gnome-authentication-agent-1"
 spawn-at-startup "noctalia"
 EOF
 
-# 8. Configura o Zellij
+print_step 9 "Gerando arquivo de configuração padrão do Zellij"
 ZELLIJ_DIR="$USER_HOME/.config/zellij"
 sudo -u $REAL_USER mkdir -p "$ZELLIJ_DIR"
-
-# Gera o arquivo de configuração (config.kdl) com os padrões do Zellij
 sudo -u $REAL_USER zellij setup --dump-config | sudo -u $REAL_USER tee "$ZELLIJ_DIR/config.kdl" > /dev/null
 
-echo "Instalação concluída! Reinicie a máquina para aplicar."
+echo -e "\n\033[1;32m ████████████████████████████████████████████████████████\033[0m"
+echo -e " \033[1;32m▶ INSTALAÇÃO CONCLUÍDA COM SUCESSO!\033[0m"
+echo -e "\033[1;32m ████████████████████████████████████████████████████████\033[0m"
+echo -e "\n Reinicie a máquina com \033[1;33msudo reboot\033[0m para aplicar as alterações."
