@@ -31,7 +31,7 @@ sudo xbps-install -Syu
 sudo xbps-install -y \
   wayland xorg-server-xwayland dbus mesa-dri vulkan-loader pipewire wireplumber bluez \
   niri seatd polkit polkit-gnome \
-  xdg-desktop-portal xdg-desktop-portal-gnome \
+  xdg-desktop-portal xdg-desktop-portal-gnome gnome-keyring \
   greetd tuigreet yazi nerd-fonts alacritty zellij \
   waybar mako swaybg swayidle \
   linux-firmware-amd vulkan-radeon amd-ucode mesa-vaapi
