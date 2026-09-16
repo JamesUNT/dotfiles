@@ -57,7 +57,7 @@ vt = 1
 
 [default_session]
 command = "tuigreet --time --cmd niri-session"
-user = "_greetd"
+user = "_greeter"
 EOF
 
 print_step 6 "Preparando arquivos do Niri no diretório do usuário"
