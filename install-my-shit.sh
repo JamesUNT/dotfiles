@@ -41,13 +41,21 @@ print_step 2 "Atualizando imagens e módulos"
 sudo xbps-reconfigure -a # Alterado para -a para maior segurança
 
 print_step 3 "Ativando serviços runit e limpando conflitos do TTY1"
-for svc in dbus polkitd seatd bluetoothd greetd; do
+# Garante que os serviços básicos comecem a rodar imediatamente
+for svc in dbus polkitd seatd bluetoothd; do
     sudo ln -sf "/etc/sv/$svc" /var/service/
 done
+# Aguarda o seatd criar o socket antes do greetd subir
+sleep 1 
+sudo ln -sf /etc/sv/greetd /var/service/
 sudo rm -f /var/service/agetty-tty1
 
 print_step 4 "Configurando permissões de hardware (Seatd e Bluetooth)"
-sudo usermod -aG bluetooth,_seatd "$REAL_USER"
+sudo usermod -aG bluetooth,_seatd,video,audio "$REAL_USER"
+# CRUCIAL: O usuário do greeter precisa de permissão de vídeo/assento
+sudo usermod -aG _seatd,video,audio _greeter 
+# CRUCIAL: Altera o shell do _greeter para permitir que o tuigreet rode
+sudo chsh -s /bin/sh _greeter
 
 print_step 5 "Configurando gerenciador de login (Tuigreet)"
 sudo mkdir -p /etc/greetd
@@ -56,9 +64,11 @@ sudo tee /etc/greetd/config.toml > /dev/null <<EOF
 vt = 1
 
 [default_session]
-command = "tuigreet --time --cmd niri-session"
+# Adicionado --remember e --remember-session para facilitar futuros logins
+command = "tuigreet --time --remember --remember-session --cmd niri-session"
 user = "_greeter"
 EOF
+
 
 print_step 6 "Preparando arquivos do Niri no diretório do usuário"
 NIRI_DIR="$USER_HOME/.config/niri"
