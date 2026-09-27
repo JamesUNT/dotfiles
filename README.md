@@ -1,2 +1,2 @@
 # dotfiles
-Meus dotfiles e scripts de instalação e configuração.
+Configurações de programas que uso no ambiente linux.
