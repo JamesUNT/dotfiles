@@ -1,0 +1,38 @@
+image=/home/tongo/Imagens/wallhaven/wallhaven-jxg9qw.jpg
+scaling=fit
+
+# --- General Behavior ---
+ignore-empty-password
+show-failed-attempts
+
+# --- Monochromatic Typography & Layout ---
+font=monospace
+font-size=20
+indicator-radius=90
+indicator-thickness=8
+
+# --- Monochromatic Indicator Colors ---
+# Outer ring layout (Pure Stark Whites & Translucent Grays)
+color=00000000
+line-color=ffffff66
+ring-color=ffffffaa
+inside-color=000000dd
+text-color=ffffff
+
+# Matching clear/typing feedback state
+line-clear-color=ffffff99
+ring-clear-color=ffffff66
+inside-clear-color=000000cc
+text-clear-color=ffffff
+
+# Matching verification state
+line-ver-color=ffffff
+ring-ver-color=ffffff
+inside-ver-color=222222ee
+text-ver-color=ffffff
+
+# Subdued Red accent for failure (matches structural warning/system look)
+line-wrong-color=ff3333
+ring-wrong-color=ff3333aa
+inside-wrong-color=110000f0
+text-wrong-color=ff3333
