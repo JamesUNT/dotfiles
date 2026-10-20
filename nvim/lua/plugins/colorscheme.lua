@@ -1,15 +1,15 @@
--- gruvbox theme
 return {
   {
-    "ellisonleao/gruvbox.nvim",
+    "wnkz/monoglow.nvim"
+    lazy = false,
     priority = 1000,
-    config = true,
-    opts = { transparent_mode = true },
+    opts = {}
   },
+
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
-    },
-  },
+      colorscheme = "monoglow",
+    }
+  }
 }
