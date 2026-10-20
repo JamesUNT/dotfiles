@@ -19,10 +19,8 @@
         "memory",
         "temperature",
         "backlight",
-        "keyboard-state",
         "battery",
-        "battery#bat2",
-	"network",
+	      "network",
         "clock",
         "tray",
         "custom/power"
@@ -131,7 +129,7 @@
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
+        "format-source": " {volume}% ",
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",
@@ -139,10 +137,9 @@
             "headset": "",
             "phone": "",
             "portable": "",
-            "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "alacritty -e wiremix"
     },
     "custom/media": {
         "format": "{icon} {text}",
