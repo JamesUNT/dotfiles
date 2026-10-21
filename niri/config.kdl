@@ -370,6 +370,10 @@ binds {
     // Mod-Shift-/, which is usually the same as Mod-?,
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
+   
+    // Configuration to brightness control
+    F12 { spawn "brightnessctl" "set" "+5%"; }
+    F11 { spawn "brightnessctl" "set" "5%-"; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
