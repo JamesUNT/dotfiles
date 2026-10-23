@@ -14,7 +14,6 @@
         "mpd",
         "idle_inhibitor",
         "pulseaudio",
-        "power-profiles-daemon",
         "cpu",
         "memory",
         "temperature",
@@ -23,6 +22,7 @@
 	      "network",
         "clock",
         "tray",
+        "power-profiles-daemon",
         "custom/power"
     ],
     "niri/workspaces": {
