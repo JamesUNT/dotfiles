@@ -3,22 +3,20 @@
     "height": 30,
     "spacing": 4,
     "modules-left": [
-        "niri/workspaces",
-        "custom/media",
-	"niri/window"
+        "niri/workspaces"
+	      // "niri/window"
     ],
     "modules-center": [
-        
+    "mpris"
     ],
     "modules-right": [
-        "mpris",
         "pulseaudio",
         "cpu",
         "memory",
         "temperature",
         "backlight",
         "battery",
-	      "network",
+	      // "network",
         "clock",
         "tray",
         "power-profiles-daemon",
