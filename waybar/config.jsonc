@@ -11,7 +11,7 @@
         
     ],
     "modules-right": [
-        "mpd",
+        "mpris",
         "pulseaudio",
         "cpu",
         "memory",
@@ -140,16 +140,18 @@
         },
         "on-click": "alacritty -e wiremix"
     },
-    "custom/media": {
-        "format": "{icon} {text}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "󰝚"
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "player-icons": {
+            "default": "🎵",
+            "spotify": ""
         },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"
+        "status-icons": {
+            "paused": "⏸"
+        },
+        "dynamic-order": ["artist", "title"],
+        "dynamic-len": 40
     },
     "custom/power": {
         "format" : "⏻ ",
