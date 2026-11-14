@@ -142,11 +142,13 @@
         "format": "{player_icon} {dynamic}",
         "format-paused": "{status_icon} <i>{dynamic}</i>",
         "player-icons": {
-            "default": "🎵",
-            "spotify": ""
+            "default": "",
+            "spotify": "",
+            "firefox": "󰈹",
+            "vlc": "󰕼"
         },
         "status-icons": {
-            "paused": "⏸"
+            "paused": ""
         },
         "dynamic-order": ["artist", "title"],
         "dynamic-len": 40
